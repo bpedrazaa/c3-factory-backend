@@ -44,6 +44,7 @@ async function getDefects(){
 	var queryString = "select * from defect";
 
 	var result = await query_promise(queryString);
+	//console.log(result)
 	return result;
 }
 
