@@ -2,25 +2,25 @@ const express = require('express');
 const cors = require('cors');
 const mysql =require('mysql');
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 
 const app = express();
-const PORT = 4000;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
+const { DB_ENDPOINT, DB_NAME, DB_PASS, DB_USER, DB_PORT, PORT } = process.env;
 
 var connection = mysql.createConnection({
-	host: "factory-database.cvbyqpqy6eav.us-east-1.rds.amazonaws.com",
-	user: "admin",
-	password: "db1001001.",
-	port: "3306",
-	database: "factory_database"
+	host: DB_ENDPOINT, 
+	user: DB_USER,
+	password: DB_PASS,
+	port: DB_PORT,
+	database: DB_NAME
 })
 
-var createConnection = async () => {
-	await connection.connect((err) => {
+var createConnection = async () => { await connection.connect((err) => {
 		if(err){
 			console.error("Database connection failed: " + err.stack);
 		}
@@ -68,4 +68,4 @@ app.post('/api/defect', async(req, res) => {
 	res.send(newDefect);
 });
 
-app.listen(PORT, () => console.log(`The factory backend is running in port: :${PORT}`));
+app.listen(process.env.PORT, () => console.log(`The factory backend is running in port: :${process.env.PORT}`));
